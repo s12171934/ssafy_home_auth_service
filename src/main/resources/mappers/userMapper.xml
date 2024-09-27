@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafyhome.ssafy_home_auth_service.mapper.UserMapper">
+    <select id="getUserByIdAndEmail" resultType="com.ssafyhome.ssafy_home_auth_service.entity.UserEntity" parameterType="string">
+        SELECT
+            user_seq,
+            user_id,
+            user_pw,
+            user_email
+        FROM
+            user
+        WHERE
+            user_id = #{userId} AND
+            user_email = #{userEmail}
+    </select>
+</mapper>

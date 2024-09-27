@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: auth
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:${spring.cloud.config.uri}
+  cloud:
+    config:
+      uri: http://39.117.211.88:9000
+      username: ssafy121905
+      password: ssafyhomeconfigserver
+      fail-fast: true
