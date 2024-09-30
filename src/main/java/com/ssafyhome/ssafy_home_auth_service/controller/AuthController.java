@@ -13,7 +13,10 @@ public class AuthController {
   private final PassportService passportService;
   private final RefreshService refreshService;
 
-  public AuthController(PassportService passportService, RefreshService refreshService) {
+  public AuthController(
+      PassportService passportService,
+      RefreshService refreshService
+  ) {
 
     this.passportService = passportService;
     this.refreshService = refreshService;
@@ -26,7 +29,7 @@ public class AuthController {
       HttpServletResponse response
   ) {
 
-    return null;
+    return passportService.createPassport(accessToken, response);
   }
 
   @PostMapping("/reissue")
@@ -35,6 +38,6 @@ public class AuthController {
       String refreshToken,
       HttpServletResponse response) {
 
-    return null;
+    return refreshService.reissue(refreshToken, response);
   }
 }

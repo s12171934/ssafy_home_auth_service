@@ -51,13 +51,12 @@ public class JWTUtil {
     }
   }
 
-  public String createJWT(String category, String username, String email, String role, Long expiration) {
+  public String createJWT(String category, String username, String email, Long expiration) {
 
     return Jwts.builder()
         .claim("category", category)
         .claim("username", username)
         .claim("email", email)
-        .claim("role", role)
         .issuedAt(new Date(System.currentTimeMillis()))
         .expiration(new Date(System.currentTimeMillis() + expiration))
         .signWith(secretKey)

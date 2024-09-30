@@ -13,4 +13,15 @@
             user_id = #{userId} AND
             user_email = #{userEmail}
     </select>
+    <select id="getUserById" resultType="com.ssafyhome.ssafy_home_auth_service.entity.UserEntity">
+        SELECT
+            user_seq,
+            user_id,
+            user_pw,
+            user_email
+        FROM
+            user
+        WHERE
+            user_id = #{userId}
+    </select>
 </mapper>
