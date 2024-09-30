@@ -13,7 +13,7 @@
             user_id = #{userId} AND
             user_email = #{userEmail}
     </select>
-    <select id="getUserById" resultType="com.ssafyhome.ssafy_home_auth_service.entity.UserEntity">
+    <select id="getUserById" resultType="com.ssafyhome.ssafy_home_auth_service.entity.UserEntity" parameterType="string">
         SELECT
             user_seq,
             user_id,
@@ -24,4 +24,18 @@
         WHERE
             user_id = #{userId}
     </select>
+    <insert id="save" parameterType="com.ssafyhome.ssafy_home_auth_service.entity.UserEntity">
+        INSERT INTO
+            user (user_id, user_email)
+        VALUES
+            (#{userId}, #{userEmail})
+    </insert>
+    <update id="update" parameterType="com.ssafyhome.ssafy_home_auth_service.entity.UserEntity">
+        UPDATE
+            user
+        SET
+            user_email = #{userEmail}
+        WHERE
+            user_id = #{userId}
+    </update>
 </mapper>

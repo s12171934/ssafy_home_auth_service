@@ -7,30 +7,27 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
 public class CustomLogoutFilter extends GenericFilterBean {
 
-  private final RefreshService refreshService;
   private final RefreshRepository refreshRepository;
+  private final RefreshService refreshService;
   private final CookieUtil cookieUtil;
 
   public CustomLogoutFilter(
-      RefreshService refreshService,
       RefreshRepository refreshRepository,
+      RefreshService refreshService,
       CookieUtil cookieUtil
   ) {
 
-    this.refreshService = refreshService;
     this.refreshRepository = refreshRepository;
+    this.refreshService = refreshService;
     this.cookieUtil = cookieUtil;
   }
 
@@ -42,13 +39,21 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
   public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
+    String requestURI = request.getRequestURI();
+    String requestMethod = request.getMethod();
+    if(!requestURI.startsWith("/auth/logout") || !requestMethod.equals("post")) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     String refreshToken = refreshService.getRefreshToken(request);
     if (refreshService.checkRefreshToken(refreshToken) != null) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
       return;
     }
 
-
-
+    refreshRepository.deleteById(refreshToken);
+    response.addCookie(cookieUtil.deleteCookie("refresh"));
+    response.setStatus(HttpStatus.OK.value());
   }
 }
